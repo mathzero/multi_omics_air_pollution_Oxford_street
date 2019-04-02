@@ -18,3 +18,6 @@ grid:
     - 1
     - 1
     url: "/users/260401/articles/362072/master/file/figures/Table%201%20-%20Stratified%20by%20Health%20Status%20and%20Sex/Table%201%20-%20Stratified%20by%20Health%20Status%20and%20Sex.csv"
+    folder_url: "/users/260401/articles/362072/master/folder/figures/Table 1 - Stratified
+      by Health Status and Sex"
+    treatFirstLineAsHeader: true
