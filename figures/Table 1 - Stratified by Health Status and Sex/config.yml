@@ -1,0 +1,20 @@
+---
+version: 2
+multicolumn: false
+web-width: 500px
+align: center
+float: h!
+grid:
+  rows: 1
+  columns: 1
+  grid_elements:
+  - path: figures/Table 1 - Stratified by Health Status and Sex/Table 1 - Stratified
+      by Health Status and Sex.csv
+    type: table
+    from:
+    - 1
+    - 1
+    to:
+    - 1
+    - 1
+    url: "/users/260401/articles/362072/master/file/figures/Table%201%20-%20Stratified%20by%20Health%20Status%20and%20Sex/Table%201%20-%20Stratified%20by%20Health%20Status%20and%20Sex.csv"
