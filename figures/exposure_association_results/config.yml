@@ -8,7 +8,7 @@ grid:
   rows: 1
   columns: 1
   grid_elements:
-  - path: figures/exposure_association_results/exposure_association_results.csv
+  - path: figures/exposure_association_results/exposure_association_results.xlsx
     type: table
     from:
     - 1
@@ -16,4 +16,5 @@ grid:
     to:
     - 1
     - 1
-    url: "/users/260401/articles/362072/master/file/figures/exposure_association_results/exposure_association_results.csv"
+    folder_url: "/users/260401/articles/362072/master/folder/figures/exposure_association_results"
+    url: "/users/260401/articles/362072/master/file/figures/exposure_association_results/exposure_association_results.xlsx"
