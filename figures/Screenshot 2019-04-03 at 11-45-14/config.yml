@@ -1,0 +1,19 @@
+---
+version: 2
+multicolumn: false
+web-width: 500px
+align: center
+float: h!
+grid:
+  rows: 1
+  columns: 1
+  grid_elements:
+  - path: figures/Screenshot 2019-04-03 at 11-45-14/Screenshot 2019-04-03 at 11-45-14.png
+    type: static
+    from:
+    - 1
+    - 1
+    to:
+    - 1
+    - 1
+    url: "/users/260401/articles/362072/master/file/figures/Screenshot%202019-04-03%20at%2011-45-14/Screenshot%202019-04-03%20at%2011-45-14.png"
