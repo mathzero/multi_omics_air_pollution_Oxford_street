@@ -8,7 +8,7 @@ grid:
   rows: 1
   columns: 1
   grid_elements:
-  - path: figures/Screenshot 2019-04-03 at 11-45-14/Screenshot 2019-04-03 at 11-45-14.png
+  - path: figures/Screenshot 2019-04-03 at 11-45-14/Screenshot 2019-04-03 at 12.00.35.png
     type: static
     from:
     - 1
@@ -16,6 +16,6 @@ grid:
     to:
     - 1
     - 1
-    url: "/users/260401/articles/362072/master/file/figures/Screenshot%202019-04-03%20at%2011-45-14/Screenshot%202019-04-03%20at%2011-45-14.png"
     folder_url: "/users/260401/articles/362072/master/folder/figures/Screenshot 2019-04-03
       at 11-45-14"
+    url: "/users/260401/articles/362072/master/file/figures/Screenshot%202019-04-03%20at%2011-45-14/Screenshot%202019-04-03%20at%2012.00.35.png"
