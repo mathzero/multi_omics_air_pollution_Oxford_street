@@ -1,7 +1,7 @@
 ---
 version: 2
-multicolumn: false
-web-width: 500px
+multicolumn: true
+web-width: 300px
 align: center
 float: h!
 grid:
@@ -17,3 +17,5 @@ grid:
     - 1
     - 1
     url: "/users/260401/articles/362072/master/file/figures/Screenshot%202019-04-03%20at%2011-45-14/Screenshot%202019-04-03%20at%2011-45-14.png"
+    folder_url: "/users/260401/articles/362072/master/folder/figures/Screenshot 2019-04-03
+      at 11-45-14"
