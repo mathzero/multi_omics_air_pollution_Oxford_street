@@ -17,5 +17,5 @@ grid:
     - 1
     - 1
     folder_url: "/users/260401/articles/362072/master/folder/figures/exposure_association_results"
-    url: "/users/260401/articles/362072/master/file/figures/exposure_association_results/exposure_association_results.xlsx"
     treatFirstLineAsHeader: true
+    url: "/users/260401/articles/362072/master/file/figures/exposure_association_results/exposure_association_results.xlsx"
