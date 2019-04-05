@@ -13,3 +13,5 @@ figures/venn_diagrams_combined
 oqrfc1djdc.html
 figures/mRNA_volcanos
 s4tcmfp2bgo.html
+figures/miRNA_volcanos
+trb5j71mlg8.html
