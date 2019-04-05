@@ -1,7 +1,7 @@
 ---
 version: 2
 multicolumn: false
-web-width: 500px
+web-width: 800px
 align: center
 float: h!
 grid:
@@ -17,3 +17,4 @@ grid:
     - 1
     - 1
     url: "/users/260401/articles/362072/master/file/figures/mRNA_volcanos/mRNA_volcanos.png"
+    folder_url: "/users/260401/articles/362072/master/folder/figures/mRNA_volcanos"
