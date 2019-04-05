@@ -15,3 +15,5 @@ figures/mRNA_volcanos
 s4tcmfp2bgo.html
 figures/miRNA_volcanos
 trb5j71mlg8.html
+figures/metabolites_volcanos
+48vh81mpdv8.html
