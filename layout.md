@@ -11,3 +11,5 @@ figures/exposure_association_results
 lepbtifhcko.html
 figures/venn_diagrams_combined
 oqrfc1djdc.html
+figures/mRNA_volcanos
+s4tcmfp2bgo.html
