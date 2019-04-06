@@ -5,6 +5,7 @@ figures/Table 1 - Stratified by Health Status and Sex
 si8i01uvpdg.html
 figures/Screenshot 2019-04-03 at 11-45-14
 4oapjiigg3g.html
+08gmmurh58g.html
 figures/exposure_by_time
 o5c87ijp4bg.html
 figures/exposure_association_results
