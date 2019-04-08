@@ -23,3 +23,5 @@ figures/omics_expression_by_location
 8jtd2t8hdmg.html
 figures/omics_heatmap
 7oucpckt84.html
+figures/Marginal_network_Combined
+vbs4hg9f9m.html
