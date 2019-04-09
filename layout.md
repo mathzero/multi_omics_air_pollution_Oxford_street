@@ -19,6 +19,7 @@ figures/metabolites_volcanos
 48vh81mpdv8.html
 figures/adductomics_volcanos
 714eqnemr5o.html
+lhss8jvdorg.html
 figures/omics_expression_by_location
 8jtd2t8hdmg.html
 figures/omics_heatmap
