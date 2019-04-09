@@ -17,3 +17,5 @@ grid:
     - 1
     - 1
     url: "/users/260401/articles/362072/master/file/figures/pls%20pairs/pls%20pairs.xlsx"
+    folder_url: "/users/260401/articles/362072/master/folder/figures/pls pairs"
+    treatFirstLineAsHeader: true
