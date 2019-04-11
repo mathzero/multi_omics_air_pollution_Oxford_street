@@ -1,0 +1,7 @@
+Metabolomic pathway,Total Size,Hits,Significant Hits,Mummichog Pvals,GSEA Pvals,Combined Pvals
+Lipoate metabolism,8,3,2,0.08539,0.01587,0.0103
+Sialic acid metabolism,107,28,6,0.3913,0.01087,0.02748
+"Valine, leucine and isoleucine degradation",65,24,5,0.4399,0.01163,0.03211
+Aminosugars metabolism,69,26,5,0.5156,0.01136,0.03597
+Glycolysis and Gluconeogenesis,49,23,4,0.6169,0.01163,0.0426
+Polyunsaturated fatty acid biosynthesis,21,6,2,0.2957,0.02941,0.04996
