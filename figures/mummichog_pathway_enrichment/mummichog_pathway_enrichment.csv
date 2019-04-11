@@ -1,0 +1,24 @@
+"","Pathway total","Hits.total","Hits.sig","EASE","FET","Gamma"
+"Lipoate metabolism",8,3,2,0.062888,0.001403,0.00021618
+"Drug metabolism - cytochrome P450",53,51,3,0.29868,0.099921,0.00081479
+"Glycine, serine, alanine and threonine metabolism",88,24,2,0.4077,0.096805,0.00154
+"Vitamin E metabolism",54,34,2,0.52516,0.17208,0.0031343
+"Tyrosine metabolism",160,66,2,0.76862,0.43463,0.015889
+"Glycolysis and Gluconeogenesis",49,23,1,1,0.40502,1
+"Carnitine shuttle",72,23,1,1,0.40502,1
+"Biopterin metabolism",22,14,1,1,0.27019,1
+"Tryptophan metabolism",94,52,1,1,0.69486,1
+"Urea cycle/amino group metabolism",85,28,1,1,0.46916,1
+"De novo fatty acid biosynthesis",106,20,1,1,0.363,1
+"Valine, leucine and isoleucine degradation",65,24,1,1,0.41842,1
+"Xenobiotics metabolism",110,49,1,1,0.6728,1
+"Omega-3 fatty acid metabolism",39,11,1,1,0.21902,1
+"Ascorbate (Vitamin C) and Aldarate Metabolism",29,13,1,1,0.25351,1
+"Polyunsaturated fatty acid biosynthesis",21,6,1,1,0.12592,1
+"TCA cycle",31,13,1,1,0.25351,1
+"Prostaglandin formation from arachidonate",78,60,1,1,0.74686,1
+"Fatty acid activation",74,19,1,1,0.34837,1
+"Aspartate and asparagine metabolism",114,33,1,1,0.5266,1
+"Drug metabolism - other enzymes",31,21,1,1,0.37731,1
+"C21-steroid hormone biosynthesis and metabolism",112,82,1,1,0.84949,1
+"Lysine metabolism",52,16,1,1,0.30249,1
