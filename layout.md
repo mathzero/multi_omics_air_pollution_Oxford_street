@@ -22,7 +22,6 @@ figures/adductomics_volcanos
 figures/peaks_to_paths_0_dpi600edit
 figures/mummichog_pathway_enrichment
 ola17o678.html
-figures/pls pairs
 lcusoqfsvf.html
 figures/omics_expression_by_location
 8jtd2t8hdmg.html
@@ -32,6 +31,7 @@ figures/Marginal_network_Combined
 vbs4hg9f9m.html
 figures/Partial_network_Combined
 rdt753017kg.html
+figures/pls pairs
 jd08bbe2eio.html
 cqf3dj14tg8.html
 2u28fg4ne08.html
