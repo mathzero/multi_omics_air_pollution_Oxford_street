@@ -8,7 +8,7 @@ grid:
   rows: 1
   columns: 1
   grid_elements:
-  - path: figures/mummichog_pathway_enrichment/mummichog_integ_pathway_enrichment.csv
+  - path: figures/mummichog_pathway_enrichment/mummichog_pathway_enrichment_final.xlsx
     type: table
     from:
     - 1
@@ -18,4 +18,4 @@ grid:
     - 1
     folder_url: "/users/260401/articles/362072/master/folder/figures/mummichog_pathway_enrichment"
     treatFirstLineAsHeader: true
-    url: "/users/260401/articles/362072/master/file/figures/mummichog_pathway_enrichment/mummichog_integ_pathway_enrichment.csv"
+    url: "/users/260401/articles/362072/master/file/figures/mummichog_pathway_enrichment/mummichog_pathway_enrichment_final.xlsx"
