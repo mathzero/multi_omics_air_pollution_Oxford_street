@@ -9,7 +9,6 @@ figures/exposure_by_time
 o5c87ijp4bg.html
 58hp49a9bk8.html
 gdbie8v3mig.html
-5j84t4amqjg.html
 figures/exposure_association_results
 lepbtifhcko.html
 figures/venn_diagrams_combined
