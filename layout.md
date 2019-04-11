@@ -21,6 +21,8 @@ figures/adductomics_volcanos
 714eqnemr5o.html
 figures/peaks_to_paths_0_dpi600edit
 gltj8n4kie.html
+figures/mummichog_pathway_enrichment
+ola17o678.html
 figures/pls pairs
 lcusoqfsvf.html
 figures/omics_expression_by_location
