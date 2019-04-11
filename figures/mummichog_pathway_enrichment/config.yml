@@ -17,3 +17,5 @@ grid:
     - 1
     - 1
     url: "/users/260401/articles/362072/master/file/figures/mummichog_pathway_enrichment/mummichog_pathway_enrichment.csv"
+    folder_url: "/users/260401/articles/362072/master/folder/figures/mummichog_pathway_enrichment"
+    treatFirstLineAsHeader: true
