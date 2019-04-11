@@ -7,7 +7,6 @@ figures/Screenshot 2019-04-03 at 11-45-14
 f1vp4g72rs.html
 figures/exposure_by_time
 o5c87ijp4bg.html
-58hp49a9bk8.html
 gdbie8v3mig.html
 figures/exposure_association_results
 lepbtifhcko.html
