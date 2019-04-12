@@ -33,5 +33,7 @@ figures/Partial_network_Combined
 rdt753017kg.html
 figures/metabolites_pca_group_3timepoints
 hq57bjchlag.html
+figures/health_status_differential_network
+cmu12i4qosg.html
 figures/pls pairs
 jd08bbe2eio.html
