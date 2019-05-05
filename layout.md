@@ -41,6 +41,8 @@ figures/pls pairs
 jd08bbe2eio.html
 figures/Screen Shot 2019-05-05 at 9-36-03 PM
 7mku7kdoje8.html
+figures/Screen Shot 2019-05-05 at 9-50-58 PM
+8qq8ntcqs9g.html
 3a39hfi453o.html
 dgqg4g7lh2g.html
 sqbmutefqs.html
