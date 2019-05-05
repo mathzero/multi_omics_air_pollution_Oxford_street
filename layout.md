@@ -44,6 +44,8 @@ figures/Screen Shot 2019-05-05 at 10-04-16 PM
 8qq8ntcqs9g.html
 figures/miRNA_loads_onDiffOmics
 u2mf18hdklg.html
+figures/OxHp_XmiRNA-Yadd
+4krg8lr16pg.html
 3a39hfi453o.html
 dgqg4g7lh2g.html
 sqbmutefqs.html
