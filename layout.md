@@ -46,6 +46,13 @@ figures/Screen Shot 2019-05-06 at 5-58-17 PM
 figures/Screen Shot 2019-05-06 at 5-59-39 PM
 figures/Screen Shot 2019-05-06 at 4-09-37 PM
 nff3r7050f8.html
+l2ujbkmk0bg.html
+d3kj4td3dj8.html
+9tll67jud48.html
+3hub8tvthm8.html
+t91l6sl97cg.html
+fjbaa5eie9g.html
+7i6s352ifao.html
 figures/Xmetab Yall
 figures/miRNA_loads_onDiffOmics
 u2mf18hdklg.html
