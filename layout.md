@@ -37,7 +37,6 @@ figures/health_status_differential_network
 cmu12i4qosg.html
 figures/Screen Shot 2019-05-06 at 4-56-49 PM
 fln468jqot.html
-altdamgnclg.html
 figures/Screen Shot 2019-05-06 at 6-45-26 PM
 t3mhnkli6c.html
 9pj1c78vsto.html
