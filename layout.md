@@ -39,7 +39,6 @@ figures/Screen Shot 2019-05-06 at 4-56-49 PM
 fln468jqot.html
 figures/Screen Shot 2019-05-06 at 6-45-26 PM
 t3mhnkli6c.html
-9pj1c78vsto.html
 figures/Screen Shot 2019-05-06 at 5-58-17 PM
 figures/Screen Shot 2019-05-06 at 5-59-39 PM
 figures/Screen Shot 2019-05-06 at 4-09-37 PM
