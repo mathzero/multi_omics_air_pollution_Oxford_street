@@ -42,6 +42,7 @@ jd08bbe2eio.html
 figures/Screen Shot 2019-05-05 at 10-03-34 PM
 figures/Screen Shot 2019-05-05 at 10-04-16 PM
 srgr9mm1q9.html
+figures/Xmetab Yall
 figures/miRNA_loads_onDiffOmics
 u2mf18hdklg.html
 figures/OxHp_XmiRNA-Yadd
