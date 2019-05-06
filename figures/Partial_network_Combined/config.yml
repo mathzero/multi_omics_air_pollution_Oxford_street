@@ -8,7 +8,7 @@ grid:
   rows: 1
   columns: 1
   grid_elements:
-  - path: figures/Partial_network_Combined/Partial_network_Combined.png
+  - path: figures/Partial_network_Combined/Partial_network_Combined-min.png
     type: static
     from:
     - 1
@@ -16,5 +16,5 @@ grid:
     to:
     - 1
     - 1
-    url: "/users/260401/articles/362072/master/file/figures/Partial_network_Combined/Partial_network_Combined.png"
     folder_url: "/users/260401/articles/362072/master/folder/figures/Partial_network_Combined"
+    url: "/users/260401/articles/362072/master/file/figures/Partial_network_Combined/Partial_network_Combined-min.png"
