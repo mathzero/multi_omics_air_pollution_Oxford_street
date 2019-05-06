@@ -48,7 +48,6 @@ figures/Screen Shot 2019-05-06 at 4-09-37 PM
 nff3r7050f8.html
 v53l2dgjngg.html
 8jkoak71l6g.html
-p6pdhq1oki8.html
 7bn4urral28.html
 l2ujbkmk0bg.html
 d3kj4td3dj8.html
