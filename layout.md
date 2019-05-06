@@ -37,7 +37,6 @@ figures/metabolites_pca_group_3timepoints
 hq57bjchlag.html
 figures/health_status_differential_network
 cmu12i4qosg.html
-figures/pls pairs
 jd08bbe2eio.html
 figures/Screen Shot 2019-05-05 at 10-03-34 PM
 figures/Screen Shot 2019-05-05 at 10-04-16 PM
