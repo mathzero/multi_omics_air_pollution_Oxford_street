@@ -62,5 +62,4 @@ nih7m1mf2e.html
 dgqg4g7lh2g.html
 rkiu3s29sdk.html
 fr9bc906r6k.html
-dhqee6bd5q8.html
 figures/Screen Shot 2019-05-07 at 3-12-36 AM
