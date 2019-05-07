@@ -44,7 +44,6 @@ figures/Screen Shot 2019-05-06 at 5-59-39 PM
 3svsdo02ilg.html
 figures/Screen Shot 2019-05-07 at 2-33-19 AM
 7bn4urral28.html
-figures/Venn_XmetabYadduct
 u87pfdh93f.html
 l2ujbkmk0bg.html
 d3kj4td3dj8.html
@@ -53,7 +52,6 @@ d3kj4td3dj8.html
 t91l6sl97cg.html
 fjbaa5eie9g.html
 7i6s352ifao.html
-figures/Xmetab Yall
 figures/miRNA_loads_onDiffOmics
 u2mf18hdklg.html
 figures/OxHp_XmiRNA-Yadd
