@@ -44,6 +44,8 @@ figures/Screen Shot 2019-05-06 at 5-59-39 PM
 3svsdo02ilg.html
 figures/Screen Shot 2019-05-07 at 2-33-19 AM
 7bn4urral28.html
+figures/Venn_XmetabYmRNA
+u87pfdh93f.html
 l2ujbkmk0bg.html
 d3kj4td3dj8.html
 9tll67jud48.html
