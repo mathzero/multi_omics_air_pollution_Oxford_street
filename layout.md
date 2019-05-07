@@ -53,7 +53,6 @@ fjbaa5eie9g.html
 7i6s352ifao.html
 figures/miRNA_loads_onDiffOmics
 u2mf18hdklg.html
-figures/OxHp_XmiRNA-Yadd
 4krg8lr16pg.html
 figures/OxHp_XmiRNA-Ymetab
 figures/OxHp_XmiRNA-YmRNA
