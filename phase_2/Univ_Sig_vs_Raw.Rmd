@@ -1,0 +1,309 @@
+---
+title: "Integrate_Univariate_Sig.vs.Raw"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+#UNIVARIATE ANALYSIS OF SIGNIFICANT RESULTS
+
+
+```{r}
+rm(list=ls())
+setwd("~/Desktop/TD_Proj_Data/")
+
+#Raw Data
+load("~/Desktop/TD_Proj_Data/Oxford_Street_Full_peaks_imputed_metabolomics.RData")
+metabolites <- Full_peaks_imputed
+
+adductomics <- read.csv("Adductomics_Oxford_Street_all_imputed.csv")
+
+miRNA_data <- data.frame(t(read.table("OXF2_Tx_miRNA_procd.txt")))
+miRNA_target <- read.csv("OXF2_Tx_miRNA_TargetFile.txt", sep="")
+
+#Read in Significant Omics
+multiomic_sig <- read.csv("1_GLS_Results/multiomic_significant_vars.csv")
+multiomic_sig$d_143.1.1 <- NULL #removing duplicate OMIC
+###multiomic_sig <- multiomic_sig[-c(53/54),] delete either 53 or 54
+
+#Subsetting Significant results into distinct Omics
+sig.adduct <- multiomic_sig[,c(2,433:434)] #2613 duplicate
+sig.adduct <- sig.adduct[-c(54),]
+
+
+sig.metab <- multiomic_sig[,c(284:432)] #2613 is duplicated
+sig.metab <- sig.metab[-c(54),]
+
+sig.miRNA <- multiomic_sig[,c(3:8)] #2613 is duplicated
+sig.miRNA <- sig.miRNA[-c(54),]
+
+####Issue w/ mRNA
+#sig.mRNA <- multiomic_sig[,c(2, 9:283)] #2613 has different values
+######
+
+
+#Making Raw have the same number of rows as significant set
+### For miRNA
+
+#Adding OMIC.ID to raw miRNA
+#Altering miRNA rownames
+rownames <- rownames(miRNA_data)
+rownames <- gsub("[.]", "-", rownames)
+rownames(miRNA_data) <- rownames
+
+#Building index for miRNA
+miRNA_data$SampleCode <- rownames(miRNA_data) 
+miRNA <- inner_join(miRNA_target, miRNA_data, by = "SampleCode")
+
+miRNA$ID <- as.numeric(substring(miRNA$SampleCode,3,5))
+miRNA$Time_Point <- as.factor(ifelse(grepl("4pm", miRNA$SampleCode), "T2 (4PM)", 
+                                     ifelse(grepl("8am", miRNA$SampleCode),"T1 (8AM)","T3 (24hrs)")))
+#hyde park = 1, Oxford =2
+# treatment 1-3 = HP, treatment 4-6 = Oxford
+
+numbers <- ifelse(miRNA$Treatment == 1, 11, 
+                  ifelse(miRNA$Treatment == 2, 12, 
+                         ifelse(miRNA$Treatment == 3, 13, 
+                                ifelse(miRNA$Treatment == 4, 21, 
+                                       ifelse(miRNA$Treatment == 5, 22,23)))
+                  )
+)
+
+miRNA$XP_ID <- paste(miRNA$ID,numbers, sep = "")
+miRNA <- miRNA[,c(373:375,1:372)] 
+miRNA <- within(miRNA, rm("hsa.miR.451a"))
+rownames(miRNA) <- miRNA$XP_ID
+
+#Include only miRNA Omics
+miRNA <- miRNA[,10:ncol(miRNA)]
+
+#Creating index for matching OMIC.ID
+select.idx <- multiomic_sig$XP_ID
+select.idx <- select.idx[-c(54)]
+
+#Matching to raw miRNA
+miRNA <- miRNA[intersect(select.idx, rownames(miRNA)),]
+
+dir.create("2_Integration/Data", showWarnings = FALSE)
+write.csv(miRNA, file = "2_Integration/Data/matched_miRNA.csv")
+
+
+############### For Metabolites ######################
+
+rownames(metabolites) <- metabolites$XP_ID
+metabolites <- metabolites[intersect(select.idx, rownames(metabolites)), ]
+metabolites <- metabolites[,7:ncol(metabolites)]
+metabolites$XP_ID <- NULL
+
+write.csv(metabolites, file = "2_Integration/Data/matched_metabolites.csv")
+
+################ For Adduct ########################
+
+#Problem: 29 is duplicated, need to find which duplicated is right by matching exp. values
+#Exp. values don't match Sig. values
+
+#Finding which batch in raw corresponds to sig.adduct
+add_29 <- adductomics[74:85,]
+log_add_29 <- log(add_29[,18:ncol(add_29)])
+log_add_29$XP_ID <- add_29$XP_ID
+log_add_29$id <- add_29$id
+log_add_29 <- log_add_29[,c(33,34,1:32)]
+#Discard later batch belonging to person_29
+adductomics <- adductomics[-c(79,75,77,85,81,83),]
+
+rownames(adductomics) <- adductomics$XP_ID
+adductomics <- adductomics[intersect(select.idx, rownames(adductomics)), ]
+adductomics <- adductomics[,18:ncol(adductomics)]
+adductomics <- log(adductomics)
+
+write.csv(adductomics, file = "2_Integration/Data/matched_adducts.csv")
+
+#################### Univariate Model #########################
+#X - entire omic set
+#Y - significant omics
+
+##### Loading the data ######
+
+#Significant Set
+sig.miRNA = as.data.frame(scale(sig.miRNA))
+sig.metab = as.data.frame(scale(sig.metab))
+
+sig.adduct = as.data.frame(scale(sig.adduct))
+sig.adduct$XP_ID <- NULL
+
+#Whole Set
+miRNA = read.csv("2_Integration/Data/matched_miRNA.csv")
+miRNA$X <- NULL
+miRNA = as.data.frame(scale(miRNA))
+
+metabolites <- read.csv("2_Integration/Data/matched_metabolites.csv")
+metabolites$X <- NULL
+metabolites <- sapply(metabolites, as.numeric)
+metabolites <- scale(metabolites)
+metabolites <- as.data.frame(metabolites)
+
+adductomics <- read.csv("2_Integration/Data/matched_adducts.csv")
+adductomics$X <- NULL
+adductomics <- as.data.frame(scale(adductomics))
+
+
+#### MODEL #####
+
+
+########################### sig.miRNA ############################
+
+### vs. Metabolies[X] ###
+Beta = Pvalues = matrix(NA, nrow = ncol(sig.miRNA), ncol=ncol(metabolites))
+
+t0 = Sys.time()
+for (i in 1:ncol(sig.miRNA)) {
+  for (j in 1:ncol(metabolites)) {
+    model1 = lm(sig.miRNA[, i] ~ metabolites[, j])
+    Beta[i, j] = coefficients(model1)["metabolites[, j]"]
+    Pvalues[i, j] = summary(model1)$coefficients["metabolites[, j]", "Pr(>|t|)"]
+  }
+}
+rownames(Pvalues) = rownames(Beta) = colnames(sig.miRNA)
+colnames(Pvalues) = colnames(Beta) = colnames(metabolites)
+
+
+saveRDS(Pvalues, "2_Integration/Results/miRNA.metab[X]_univ_pval.rds")
+saveRDS(Beta, "2_Integration/Results/miRNA.metab[X]_univ_betas.rds")
+
+
+### vs. Adducts [X] ###
+Beta = Pvalues = matrix(NA, nrow = ncol(sig.miRNA), ncol=ncol(adductomics))
+
+t0 = Sys.time()
+for (i in 1:ncol(sig.miRNA)) {
+  for (j in 1:ncol(adductomics)) {
+    model1 = lm(sig.miRNA[, i] ~ adductomics[, j])
+    Beta[i, j] = coefficients(model1)["adductomics[, j]"]
+    Pvalues[i, j] = summary(model1)$coefficients["adductomics[, j]", "Pr(>|t|)"]
+  }
+}
+rownames(Pvalues) = rownames(Beta) = colnames(sig.miRNA)
+colnames(Pvalues) = colnames(Beta) = colnames(adductomics)
+
+saveRDS(Pvalues, "2_Integration/Results/miRNA.adduct[X]_univ_pval.rds")
+saveRDS(Beta, "2_Integration/Results/miRNA.adduct[X]_univ_betas.rds")
+
+
+
+#################### sig.Metabolites ####################
+
+### vs. miRNA[X] ###
+
+Beta = Pvalues = matrix(NA, nrow = ncol(sig.metab), ncol=ncol(miRNA))
+
+t0 = Sys.time()
+for (i in 1:ncol(sig.metab)) {
+  for (j in 1:ncol(miRNA)) {
+    model1 = lm(sig.metab[, i] ~ miRNA[, j])
+    Beta[i, j] = coefficients(model1)["miRNA[, j]"]
+    Pvalues[i, j] = summary(model1)$coefficients["miRNA[, j]", "Pr(>|t|)"]
+  }
+}
+t1 = Sys.time()
+print(t1-t0)
+
+rownames(Pvalues) = rownames(Beta) = colnames(sig.metab)
+colnames(Pvalues) = colnames(Beta) = colnames(miRNA)
+
+saveRDS(Pvalues, "2_Integration/Results/metab.miRNA[X]_univ_pval.rds")
+saveRDS(Beta, "2_Integration/Results/metab.miRNA[X]_univ_betas.rds")
+
+
+### vs. Adductomics[X] ###
+
+Beta = Pvalues = matrix(NA, nrow = ncol(sig.metab), ncol=ncol(adductomics))
+
+t0 = Sys.time()
+for (i in 1:ncol(sig.metab)) {
+  for (j in 1:ncol(adductomics)) {
+    model1 = lm(sig.metab[, i] ~ adductomics[, j])
+    Beta[i, j] = coefficients(model1)["adductomics[, j]"]
+    Pvalues[i, j] = summary(model1)$coefficients["adductomics[, j]", "Pr(>|t|)"]
+  }
+}
+t1 = Sys.time()
+print(t1-t0)
+
+rownames(Pvalues) = rownames(Beta) = colnames(sig.metab)
+colnames(Pvalues) = colnames(Beta) = colnames(adductomics)
+
+saveRDS(Pvalues, "2_Integration/Results/metab.adduct[X]_univ_pval.rds")
+saveRDS(Beta, "2_Integration/Results/metab.adduct[X]_univ_betas.rds")
+
+
+
+######################### sig.Adduct ########################## 
+
+### vs. miRNA[X] ###
+
+Beta = Pvalues = matrix(NA, nrow=ncol(sig.adduct), ncol=ncol(miRNA))
+
+t0 = Sys.time()
+for (i in 1:ncol(sig.adduct)) {
+  print(i)
+  for (j in 1:ncol(miRNA)) {
+    model1 = lm(sig.adduct[, i] ~ miRNA[, j])
+    Beta[i, j] = coefficients(model1)["miRNA[, j]"]
+    Pvalues[i, j] = summary(model1)$coefficients["miRNA[, j]", "Pr(>|t|)"]
+  }
+}
+t1 = Sys.time()
+print(t1-t0)
+
+rownames(Pvalues) = rownames(Beta) = colnames(sig.adduct)
+colnames(Pvalues) = colnames(Beta) = colnames(miRNA)
+
+saveRDS(Pvalues, "2_Integration/Results/adduct.miRNA[X]_univ_pval.rds")
+saveRDS(Beta, "2_Integration/Results/adduct.miRNA[X]_univ_betas.rds")
+
+
+
+### vs. metabolites[X] ###
+
+Beta = Pvalues = matrix(NA, nrow=ncol(sig.adduct), ncol=ncol(metabolites))
+
+t0 = Sys.time()
+for (i in 1:ncol(sig.adduct)) {
+  print(i)
+  for (j in 1:ncol(metabolites)) {
+    model1 = lm(sig.adduct[, i] ~ metabolites[, j])
+    Beta[i, j] = coefficients(model1)["metabolites[, j]"]
+    Pvalues[i, j] = summary(model1)$coefficients["metabolites[, j]", "Pr(>|t|)"]
+  }
+}
+t1 = Sys.time()
+print(t1-t0)
+
+rownames(Pvalues) = rownames(Beta) = colnames(sig.adduct)
+colnames(Pvalues) = colnames(Beta) = colnames(metabolites)
+
+saveRDS(Pvalues, "2_Integration/Results/adduct.metabolites[X]_univ_pval.rds")
+saveRDS(Beta, "2_Integration/Results/adduct.metabolites[X]_univ_betas.rds")
+```
+
+
+
+Finding Sig. Pairs according to 'BH'
+
+```{r}
+add.metab_pval <- readRDS("2_Integration/Results/adduct.metabolites[X]_univ_pval.rds")
+add.miRNA_pval <- readRDS("2_Integration/Results/adduct.miRNA[X]_univ_pval.rds")
+
+miRNA.metab_pval <- readRDS("2_Integration/Results/miRNA.metab[X]_univ_pval.rds")
+miRNA.add_pval <- readRDS("2_Integration/Results/miRNA.adduct[X]_univ_pval.rds")
+
+metab.miRNA_pval <- readRDS("2_Integration/Results/metab.miRNA[X]_univ_pval.rds")
+metab.add_pval <- readRDS("2_Integration/Results/metab.adduct[X]_univ_pval.rds")
+
+pval_list <- list(add.metab_pval, add.miRNA_pval, miRNA.add_pval, miRNA.metab_pval, metab.miRNA_pval, metab.add_pval)
+
+#Showing # of sig. pairs in each OMICS comparison
+for (i in pval_list) {
+  print(sum(p.adjust(as.vector(i), method = "bonf") < 0.05))
+}
+# Significant Pairs after BH: miRNA[Y].metab[X] = 129, metab.miRNA[X] = 216, metab.add[X]= 3

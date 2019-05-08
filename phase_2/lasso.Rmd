@@ -1,0 +1,205 @@
+---
+title: "lasso_Sig_vs_Raw"
+author: "hong"
+date: "3/14/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+rm(list=ls())
+setwd("~/Desktop/TD_Proj_Data")
+
+
+### Sig. Data ###
+sig.adduct <- read.csv("2_Integration/Data/sig.adduct.csv")
+sig.adduct$X <- NULL
+
+sig.metab <- read.csv("2_Integration/Data/sig.metab.csv")
+sig.metab$X <- NULL
+
+sig.miRNA <- read.csv("2_Integration/Data/sig.miRNA.csv")
+sig.miRNA$X <- NULL
+
+### Raw Data ###
+adductomics <- read.csv("2_Integration/Data/matched_adducts.csv")  
+adductomics$X <- NULL
+
+metabolites <- read.csv("2_Integration/Data/matched_metabolites.csv")
+metabolites$X <- NULL
+metabolites <- as.data.frame(scale(metabolites))
+
+miRNA <- read.csv("2_Integration/Data/matched_miRNA.csv")
+miRNA$X <- NULL
+miRNA = as.data.frame(scale(miRNA))
+```
+
+
+############## Lasso Model ##################
+
+
+
+1. Adducts[Y] vs. Metabolites[X] 
+
+Context:
+You can have a pollutant that happens to go through "metabolic activation", so this pollutant is now a metabolite. Now, can this metabolite bind DNA? If so, it is a DNA-adduct. 
+
+Hypothesis:
+a) "Are there sets of metabolites significantly correlated with adducts that were significantly correlated with TRAP?"
+b) So then, are any of these metabolites also adducts? - ie. are these metabolites capable of binding DNA, thus, becoming adducts?
+c) This is looking at a separate pathway. Could the appearance of sign. adducts be a result of metabolites?
+  ci) Could the appearance of sign. adducts be a result of sign. metabolites (related to exp)?
+
+```{r}
+library(lme4)
+
+#glmnet expects matrix of predictors
+metabolites <- as.matrix(metabolites)
+adductomics <- as.matrix(adductomics)
+miRNA <- as.matrix(miRNA)
+
+###
+set.seed(1)
+lassomodels.1se = lassomodels = NULL
+
+t0 = Sys.time()
+for (k in 1:ncol(sig.adduct)) {
+  print(k)
+  model.lasso = cv.glmnet(x = metabolites, y = sig.adduct[,k])
+  lassomodels.1se = cbind(lassomodels.1se, coef(model.lasso, s = "lambda.1se")[-1])
+  lassomodels = cbind(lassomodels, coef(model.lasso, s = "lambda.min")[-1])
+}
+t1 = Sys.time()
+print((t1-t0))
+
+colnames(lassomodels) = colnames(lassomodels.1se) = colnames(sig.adduct)
+rownames(lassomodels) = rownames(lassomodels.1se) = colnames(metabolites)
+
+saveRDS(lassomodels.1se, "2_Integration/Results/Lasso/adduct.metab[X]lasso_1se.rds")
+saveRDS(lassomodels, "2_Integration/Results/Lasso/adduct.metab[X]lasso_min.rds")
+```
+
+```{r} {Number of metabolites[X] related to each sig.adduct[Y]}
+
+add.metab_1se = readRDS("2_Integration/Results/Lasso/adduct.metab[X]lasso_1se.rds")
+add.metab.min = readRDS("2_Integration/Results/Lasso/adduct.metab[X]lasso_min.rds")
+
+#lambda w/ 1SE
+apply(add.metab_1se, 2, FUN = function(x) {
+  sum(x != 0)
+})
+
+#lambda.min
+apply(add.metab.min, 2, FUN = function(x) {
+  sum(x != 0)
+})
+```
+
+1b) sig.Metab[Y] vs. Adducts[X] (Very Secondary)
+- Is there a set of adducts that is linearly significant to sig.Metab? 
+- Implication: Are there DNA defects/modifications that leads to different levels of metabolites we see (related to exposure)? 
+- Need to consider the layers between adducts-->metabolites
+```{r}
+set.seed(1)
+lassomodels.1se = lassomodels = NULL
+
+t0 = Sys.time()
+for (k in 1:ncol(sig.metab)) {
+  print(k)
+  model.lasso = cv.glmnet(x = adductomics, y = sig.metab[,k])
+  lassomodels.1se = cbind(lassomodels.1se, coef(model.lasso, s = "lambda.1se")[-1])
+  lassomodels = cbind(lassomodels, coef(model.lasso, s = "lambda.min")[-1])
+}
+t1 = Sys.time()
+print((t1-t0))
+
+colnames(lassomodels) = colnames(lassomodels.1se) = colnames(sig.metab)
+rownames(lassomodels) = rownames(lassomodels.1se) = colnames(adductomics)
+
+saveRDS(lassomodels.1se, "2_Integration/Results/Lasso/metab.adduct[X]lasso_1se.rds")
+saveRDS(lassomodels, "2_Integration/Results/Lasso/metab.adduct[X]lasso_min.rds")
+```
+
+
+c) sig.adduct[Y] vs. sig.metab[X]
+- of the sig.metab are there linear combinations metabs correlated to individual sig. adducts?
+
+- probably doesn't make sense to run sig.metab[Y] vs. sig.adduct[X], because can adducts lead to different levels of metabolites?
+```{r}
+sig.metab <- as.matrix(sig.metab)
+
+set.seed(1)
+lassomodels.1se = lassomodels = NULL
+
+t0 = Sys.time()
+for (k in 1:ncol(sig.adduct)) {
+  print(k)
+  model.lasso = cv.glmnet(x = sig.metab, y = sig.adduct[,k])
+  lassomodels.1se = cbind(lassomodels.1se, coef(model.lasso, s = "lambda.1se")[-1])
+  lassomodels = cbind(lassomodels, coef(model.lasso, s = "lambda.min")[-1])
+}
+t1 = Sys.time()
+print((t1-t0))
+
+colnames(lassomodels) = colnames(lassomodels.1se) = colnames(sig.adduct)
+rownames(lassomodels) = rownames(lassomodels.1se) = colnames(sig.metab)
+
+saveRDS(lassomodels.1se, "2_Integration/Results/Lasso/sigAdduct.sigMetab[X]lasso_1se.rds")
+saveRDS(lassomodels, "2_Integration/Results/Lasso/sigAdduct.sigMetab[X]lasso_min.rds")
+```
+
+2) sig.metabolites[Y] vs. miRNA[X]
+- are there silencing artifacts that led to the metabolites we see related to exp?
+
+*probably not much significance running sig.miRNA[Y] vs. metabolites[X] - can metabolites affect miRNA levels? Unlikely, unless the metabolites are DNA/RNA-adducts
+
+```{r}
+set.seed(1)
+lassomodels.1se = lassomodels = NULL
+
+t0 = Sys.time()
+for (k in 1:ncol(sig.metab)) {
+  print(k)
+  model.lasso = cv.glmnet(x = miRNA, y = sig.metab[,k])
+  lassomodels.1se = cbind(lassomodels.1se, coef(model.lasso, s = "lambda.1se")[-1])
+  lassomodels = cbind(lassomodels, coef(model.lasso, s = "lambda.min")[-1])
+}
+t1 = Sys.time()
+print((t1-t0))
+
+colnames(lassomodels) = colnames(lassomodels.1se) = colnames(sig.metab)
+rownames(lassomodels) = rownames(lassomodels.1se) = colnames(miRNA)
+
+saveRDS(lassomodels.1se, "2_Integration/Results/Lasso/metab.miRNA[X]lasso_1se.rds")
+saveRDS(lassomodels, "2_Integration/Results/Lasso/metab.miRNA[X]lasso_min.rds")
+```
+
+3. sig.miRNA[Y] vs. Adducts[X]
+- can modifications to DNA lead to differential expression of miRNA? - Perhaps.
+
+**(sig.adduct[Y] vs. miRNA[X])
+- can RNA silencing lead to modification in DNA? - Unlikely.
+
+```{r}
+set.seed(1)
+lassomodels.1se = lassomodels = NULL
+
+t0 = Sys.time()
+for (k in 1:ncol(sig.miRNA)) {
+  print(k)
+  model.lasso = cv.glmnet(x = adductomics, y = sig.miRNA[,k])
+  lassomodels.1se = cbind(lassomodels.1se, coef(model.lasso, s = "lambda.1se")[-1])
+  lassomodels = cbind(lassomodels, coef(model.lasso, s = "lambda.min")[-1])
+}
+t1 = Sys.time()
+print((t1-t0))
+
+colnames(lassomodels) = colnames(lassomodels.1se) = colnames(sig.miRNA)
+rownames(lassomodels) = rownames(lassomodels.1se) = colnames(adductomics)
+
+saveRDS(lassomodels.1se, "2_Integration/Results/Lasso/miRNA.adduct[X]lasso_1se.rds")
+saveRDS(lassomodels, "2_Integration/Results/Lasso/miRNA.adduct[X]lasso_min.rds")
+```

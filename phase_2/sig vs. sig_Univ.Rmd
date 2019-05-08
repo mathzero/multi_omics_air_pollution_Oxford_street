@@ -1,0 +1,550 @@
+---
+title: "sig vs. sig"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r}
+rm(list=ls())
+setwd("~/Desktop/TD_Proj_Data")
+
+#Load sig. sets
+adductomics = readRDS("2_Integration/Data/adductomics_significant_denoised.rds")
+metabolites = readRDS("2_Integration/Data/metabolites_significant_denoised.rds")
+miRNA = readRDS("2_Integration/Data/miRNA_significant_denoised.rds")
+mRNA = readRDS("2_Integration/Data/mRNA_significant_denoised.rds")
+
+```
+
+
+###### Univariate #####
+
+
+[Y] sig.mRNA
+```{r} 
+##### sig.mRNA[Y] vs. sig.miRNA[X] #####
+
+#Oxford
+
+ox_y.mRNA <- data.frame(mRNA[mRNA$Loc == "ox",5])
+colnames(ox_y.mRNA) <- "A_23_P77731"
+ox_x.miRNA <- data.frame(miRNA[miRNA$Loc == "ox",2:7])
+
+Beta = Pvalues = matrix(NA, nrow = ncol(ox_y.mRNA), ncol = ncol(ox_x.miRNA))
+
+for (i in 1:ncol(ox_y.mRNA)){
+  for (j in 1:ncol(ox_x.miRNA)) {
+    model1 = lm(ox_y.mRNA[, i] ~ ox_x.miRNA[, j])
+    Beta[i, j] = coefficients(model1)["ox_x.miRNA[, j]"]
+    Pvalues[i, j] = summary(model1)$coefficients["ox_x.miRNA[, j]", "Pr(>|t|)"]
+  }
+}
+rownames(Pvalues) = rownames(Beta) = colnames(ox_y.mRNA)
+colnames(Pvalues) = colnames(Beta) = colnames(ox_x.miRNA)
+
+write.csv(Pvalues, "2_Integration/Results/sig.sig_univ/ox_mRNA[Y].miRNA_pval.csv")
+write.csv(Beta, "2_Integration/Results/sig.sig_univ/ox_mRNA[Y].miRNA_betas.csv")
+
+
+#Hyde Park
+
+hp_y.mRNA <- data.frame(mRNA[mRNA$Loc == "hp", 5])
+colnames(hp_y.mRNA) <- "A_23_P77731"
+hp_x.miRNA <- data.frame(miRNA[miRNA$Loc == "hp", 2:7])
+
+Beta = Pvalues = matrix(NA, nrow = ncol(hp_y.mRNA), ncol = ncol(hp_x.miRNA))
+
+for (j in 1:ncol(hp_x.miRNA)) {
+  model1 = lm(hp_y.mRNA$A_23_P77731 ~ hp_x.miRNA[, j])
+  Beta[i, j] = coefficients(model1)["hp_x.miRNA[, j]"]
+  Pvalues[i, j] = summary(model1)$coefficients["hp_x.miRNA[, j]", "Pr(>|t|)"]
+  }
+rownames(Pvalues) = rownames(Beta) = colnames(hp_y.mRNA)
+colnames(Pvalues) = colnames(Beta) = colnames(hp_x.miRNA)
+
+write.csv(Pvalues, "2_Integration/Results/sig.sig_univ/hp_mRNA[Y].miRNA_pval.csv")
+write.csv(Beta, "2_Integration/Results/sig.sig_univ/hp_mRNA[Y].miRNA_betas.csv")
+```
+
+```{r}
+##### sig.mRNA[Y] vs. sig.Adducts[X] #####
+
+#Oxford
+
+#ox_y.mRNA
+ox_x.adducts <- data.frame(adductomics[adductomics$Loc == "ox",2:3])
+
+Beta = Pvalues = matrix(NA, nrow = ncol(ox_y.mRNA), ncol = ncol(ox_x.adducts))
+
+for (j in 1:ncol(ox_x.adducts)) {
+  model1 = lm(ox_y.mRNA$A_23_P77731 ~ ox_x.adducts[, j])
+  Beta[i, j] = coefficients(model1)["ox_x.adducts[, j]"]
+  Pvalues[i, j] = summary(model1)$coefficients["ox_x.adducts[, j]", "Pr(>|t|)"]
+  }
+rownames(Pvalues) = rownames(Beta) = colnames(ox_y.mRNA)
+colnames(Pvalues) = colnames(Beta) = colnames(ox_x.adducts)
+
+write.csv(Pvalues, "2_Integration/Results/sig.sig_univ/ox_mRNA[Y].adducts_pval.csv")
+write.csv(Beta, "2_Integration/Results/sig.sig_univ/ox_mRNA[Y].adducts_betas.csv")
+
+
+#Hyde Park
+
+#hp_y.mRNA
+hp_x.adducts <- data.frame(adductomics[adductomics$Loc == "hp", 2:3])
+
+Beta = Pvalues = matrix(NA, nrow = ncol(hp_y.mRNA), ncol = ncol(hp_x.adducts))
+
+for (j in 1:ncol(hp_x.adducts)) {
+  model1 = lm(hp_y.mRNA$A_23_P77731 ~ hp_x.adducts[, j])
+  Beta[i, j] = coefficients(model1)["hp_x.adducts[, j]"]
+  Pvalues[i, j] = summary(model1)$coefficients["hp_x.adducts[, j]", "Pr(>|t|)"]
+  }
+rownames(Pvalues) = rownames(Beta) = colnames(hp_y.mRNA)
+colnames(Pvalues) = colnames(Beta) = colnames(hp_x.adducts)
+
+write.csv(Pvalues, "2_Integration/Results/sig.sig_univ/hp_mRNA[Y].adducts_pval.csv")
+write.csv(Beta, "2_Integration/Results/sig.sig_univ/hp_mRNA[Y].adducts_betas.csv")
+
+```
+
+```{r}
+##### sig.mRNA[Y] vs. sig.metabolites[X]
+
+# Oxford
+
+#ox_y.mRNA
+ox_x.metab <- data.frame(metabolites[metabolites$Loc == "ox", 2:ncol(metabolites)])
+
+Beta = Pvalues = matrix(NA, nrow = ncol(ox_y.mRNA), ncol = ncol(ox_x.metab))
+
+for (i in 1:ncol(ox_y.mRNA)) {
+  for (j in 1:ncol(ox_x.metab)) {
+    model1 = lm(ox_y.mRNA[, i] ~ ox_x.metab[, j])
+    Beta[i, j] = coefficients(model1)["ox_x.metab[, j]"]
+    Pvalues[i, j] = summary(model1)$coefficients["ox_x.metab[, j]", "Pr(>|t|)"]
+  }
+}
+rownames(Pvalues) = rownames(Beta) = colnames(ox_y.mRNA)
+colnames(Pvalues) = colnames(Beta) = colnames(ox_x.metab)
+
+write.csv(Pvalues, "2_Integration/Results/sig.sig_univ/ox_mRNA[Y].metab_pval.csv")
+write.csv(Beta, "2_Integration/Results/sig.sig_univ/ox_mRNA[Y].metab_betas.csv")
+
+
+# Hyde Park
+
+#hp_y.mRNA
+hp_x.metab = hp_y.metab
+
+Beta = Pvalues = matrix(NA, nrow = ncol(hp_y.mRNA), ncol = ncol(hp_x.metab))
+
+for (i in 1:ncol(hp_y.mRNA)) {
+  for (j in 1:ncol(hp_x.metab)) {
+    model1 = lm(hp_y.mRNA[, i] ~ hp_x.metab[, j])
+    Beta[i, j] = coefficients(model1)["hp_x.metab[, j]"]
+    Pvalues[i, j] = summary(model1)$coefficients["hp_x.metab[, j]", "Pr(>|t|)"]
+  }
+}
+rownames(Pvalues) = rownames(Beta) = colnames(hp_y.mRNA)
+colnames(Pvalues) = colnames(Beta) = colnames(hp_x.metab)
+
+write.csv(Pvalues, "2_Integration/Results/sig.sig_univ/hp_mRNA[Y].metab_pval.csv")
+write.csv(Beta, "2_Integration/Results/sig.sig_univ/hp_mRNA[Y].metab_betas.csv")
+```
+
+[Y] sig.Metabolites
+
+```{r}
+##### sig.metabolites[Y] vs. sig.mRNA[X] #####
+
+# Oxford
+ox_y.metab <- data.frame(metabolites[metabolites$Loc == "ox", 2:ncol(metabolites)])
+ox_x.mRNA = ox_y.mRNA
+
+Beta = Pvalues = matrix(NA, nrow = ncol(ox_y.metab), ncol = ncol(ox_x.mRNA))
+
+for (i in 1:ncol(ox_y.metab)) {
+  for (j in 1:ncol(ox_x.mRNA)) {
+    model1 = lm(ox_y.metab[, i] ~ ox_x.mRNA[, j])
+    Beta[i, j] = coefficients(model1)["ox_x.mRNA[, j]"]
+    Pvalues[i, j] = summary(model1)$coefficients["ox_x.mRNA[, j]", "Pr(>|t|)"]
+  }
+}
+rownames(Pvalues) = rownames(Beta) = colnames(ox_y.metab)
+colnames(Pvalues) = colnames(Beta) = colnames(ox_x.mRNA)
+
+write.csv(Pvalues, "2_Integration/Results/sig.sig_univ/ox_metab[Y].mRNA_pval.csv")
+write.csv(Beta, "2_Integration/Results/sig.sig_univ/ox_metab[Y].mRNA_betas.csv")
+
+
+# Hyde Park
+
+hp_y.metab <- data.frame(metabolites[metabolites$Loc == "hp", 2:ncol(metabolites)])
+hp_x.mRNA = hp_y.mRNA
+
+Beta = Pvalues = matrix(NA, nrow = ncol(hp_y.metab), ncol = ncol(hp_x.mRNA))
+
+for (i in 1:ncol(hp_y.metab)) {
+  for (j in 1:ncol(hp_x.mRNA)) {
+    model1 = lm(hp_y.metab[, i] ~ hp_x.mRNA[, j])
+    Beta[i, j] = coefficients(model1)["hp_x.mRNA[, j]"]
+    Pvalues[i, j] = summary(model1)$coefficients["hp_x.mRNA[, j]", "Pr(>|t|)"]
+  }
+}
+rownames(Pvalues) = rownames(Beta) = colnames(hp_y.metab)
+colnames(Pvalues) = colnames(Beta) = colnames(hp_x.mRNA)
+
+write.csv(Pvalues, "2_Integration/Results/sig.sig_univ/hp_metab[Y].mRNA_pval.csv")
+write.csv(Beta, "2_Integration/Results/sig.sig_univ/hp_metab[Y].mRNA_betas.csv")
+```
+
+```{r}
+##### sig.metabolites[Y] vs. sig.miRNA[X] #####
+
+# Oxford
+
+#ox_y.metab
+#ox_x.miRNA
+
+Beta = Pvalues = matrix(NA, nrow = ncol(ox_y.metab), ncol = ncol(ox_x.miRNA))
+
+for (i in 1:ncol(ox_y.metab)) {
+  for (j in 1:ncol(ox_x.miRNA)) {
+    model1 = lm(ox_y.metab[, i] ~ ox_x.miRNA[, j])
+    Beta[i, j] = coefficients(model1)["ox_x.miRNA[, j]"]
+    Pvalues[i, j] = summary(model1)$coefficients["ox_x.miRNA[, j]", "Pr(>|t|)"]
+  }
+}
+rownames(Pvalues) = rownames(Beta) = colnames(ox_y.metab)
+colnames(Pvalues) = colnames(Beta) = colnames(ox_x.miRNA)
+
+write.csv(Pvalues, "2_Integration/Results/sig.sig_univ/ox_metab[Y].miRNA_pval.csv")
+write.csv(Beta, "2_Integration/Results/sig.sig_univ/ox_metab[Y].miRNA_betas.csv")
+
+
+# Hyde Park
+
+#hp_y.metab
+#hp_x.miRNA
+
+Beta = Pvalues = matrix(NA, nrow = ncol(hp_y.metab), ncol = ncol(hp_x.miRNA))
+
+for (i in 1:ncol(hp_y.metab)) {
+  for (j in 1:ncol(hp_x.miRNA)) {
+    model1 = lm(hp_y.metab[, i] ~ hp_x.miRNA[, j])
+    Beta[i, j] = coefficients(model1)["hp_x.miRNA[, j]"]
+    Pvalues[i, j] = summary(model1)$coefficients["hp_x.miRNA[, j]", "Pr(>|t|)"]
+  }
+}
+rownames(Pvalues) = rownames(Beta) = colnames(hp_y.metab)
+colnames(Pvalues) = colnames(Beta) = colnames(hp_x.miRNA)
+
+write.csv(Pvalues, "2_Integration/Results/sig.sig_univ/hp_metab[Y].miRNA_pval.csv")
+write.csv(Beta, "2_Integration/Results/sig.sig_univ/hp_metab[Y].miRNA_betas.csv")
+```
+
+```{r}
+##### sig.metabolites[Y] vs. sig.adducts[X] #####
+
+# Oxford
+
+#ox_y.metab
+#ox_x.adducts
+
+Beta = Pvalues = matrix(NA, nrow = ncol(ox_y.metab), ncol = ncol(ox_x.adducts))
+
+for (i in 1:ncol(ox_y.metab)) {
+  for (j in 1:ncol(ox_x.adducts)) {
+    model1 = lm(ox_y.metab[, i] ~ ox_x.adducts[, j])
+    Beta[i, j] = coefficients(model1)["ox_x.adducts[, j]"]
+    Pvalues[i, j] = summary(model1)$coefficients["ox_x.adducts[, j]", "Pr(>|t|)"]
+  }
+}
+rownames(Pvalues) = rownames(Beta) = colnames(ox_y.metab)
+colnames(Pvalues) = colnames(Beta) = colnames(ox_x.adducts)
+
+write.csv(Pvalues, "2_Integration/Results/sig.sig_univ/ox_metab[Y].adducts_pval.csv")
+write.csv(Beta, "2_Integration/Results/sig.sig_univ/ox_metab[Y].adducts_betas.csv")
+
+
+# Hyde Park
+
+#hp_y.metab
+#hp_x.adducts
+
+Beta = Pvalues = matrix(NA, nrow = ncol(hp_y.metab), ncol = ncol(hp_x.adducts))
+
+for (i in 1:ncol(hp_y.metab)) {
+  for (j in 1:ncol(hp_x.adducts)) {
+    model1 = lm(hp_y.metab[, i] ~ hp_x.adducts[, j])
+    Beta[i, j] = coefficients(model1)["hp_x.adducts[, j]"]
+    Pvalues[i, j] = summary(model1)$coefficients["hp_x.adducts[, j]", "Pr(>|t|)"]
+  }
+}
+rownames(Pvalues) = rownames(Beta) = colnames(hp_y.metab)
+colnames(Pvalues) = colnames(Beta) = colnames(hp_x.adducts)
+
+write.csv(Pvalues, "2_Integration/Results/sig.sig_univ/hp_metab[Y].adducts_pval.csv")
+write.csv(Beta, "2_Integration/Results/sig.sig_univ/hp_metab[Y].adducts_betas.csv")
+```
+
+
+[Y] sig.Adducts
+
+```{r}
+##### sig.adducts[Y] vs. sig.metabs[X] #####
+
+# Oxford
+
+ox_y.adducts <- adductomics[adductomics$Loc == "ox", 2:3]
+#ox_x.metab
+
+Beta = Pvalues = matrix(NA, nrow = ncol(ox_y.adducts), ncol = ncol(ox_x.metab))
+
+for (i in 1:ncol(ox_y.adducts)) {
+  for (j in 1:ncol(ox_x.metab)) {
+    model1 = lm(ox_y.adducts[, i] ~ ox_x.metab[, j])
+    Beta[i, j] = coefficients(model1)["ox_x.metab[, j]"]
+    Pvalues[i, j] = summary(model1)$coefficients["ox_x.metab[, j]", "Pr(>|t|)"]
+  }
+}
+rownames(Pvalues) = rownames(Beta) = colnames(ox_y.adducts)
+colnames(Pvalues) = colnames(Beta) = colnames(ox_x.metab)
+
+write.csv(Pvalues, "2_Integration/Results/sig.sig_univ/ox_adduct[Y].metab_pval.csv")
+write.csv(Beta, "2_Integration/Results/sig.sig_univ/ox_adduct[Y].metab_betas.csv")
+
+
+# Hyde Park
+
+hp_y.adducts <- adductomics[adductomics$Loc == "hp", 2:3]
+#hp_x.metab
+
+Beta = Pvalues = matrix(NA, nrow = ncol(hp_y.adducts), ncol = ncol(hp_x.metab))
+
+for (i in 1:ncol(hp_y.adducts)) {
+  for (j in 1:ncol(hp_x.metab)) {
+    model1 = lm(hp_y.adducts[, i] ~ hp_x.metab[, j])
+    Beta[i, j] = coefficients(model1)["hp_x.metab[, j"]
+    Pvalues[i, j] = summary(model1)$coefficients["hp_x.metab[, j]", "Pr(>|t|)"]
+  }
+}
+rownames(Pvalues) = rownames(Beta) = colnames(hp_y.adducts)
+colnames(Pvalues) = colnames(Beta) = colnames(hp_x.metab)
+
+write.csv(Pvalues, "2_Integration/Results/sig.sig_univ/hp_adduct[Y].metab_pval.csv")
+write.csv(Beta, "2_Integration/Results/sig.sig_univ/hp_adduct[Y].metab_betas.csv")
+```
+
+
+```{r}
+## sig.adducts[Y] vs. sig.mRNA[X] 
+# - unlikely that mRNA predict adducts, but just in case
+
+# Oxford
+
+#ox_y.adducts
+#ox_x.mRNA
+
+Beta = Pvalues = matrix(NA, nrow = ncol(ox_y.adducts), ncol = ncol(ox_x.mRNA))
+
+for (i in 1:ncol(ox_y.adducts)) {
+  for (j in 1:ncol(ox_x.mRNA)) {
+    model1 = lm(ox_y.adducts[, i] ~ ox_x.mRNA[, j])
+    Beta[i, j] = coefficients(model1)["ox_x.mRNA[, j]"]
+    Pvalues[i, j] = summary(model1)$coefficients["ox_x.mRNA[, j]", "Pr(>|t|)"]
+  }
+}
+rownames(Pvalues) = rownames(Beta) = colnames(ox_y.adducts)
+colnames(Pvalues) = colnames(Beta) = colnames(ox_x.mRNA)
+
+write.csv(Pvalues, "2_Integration/Results/sig.sig_univ/ox_adduct[Y].mRNA_pval.csv")
+write.csv(Beta, "2_Integration/Results/sig.sig_univ/ox_adduct[Y].mRNA_betas.csv")
+
+
+# Hyde Park
+
+#hp_y.adducts
+#hp_x.mRNA
+
+Beta = Pvalues = matrix(NA, nrow = ncol(hp_y.adducts), ncol = ncol(hp_x.mRNA))
+
+for (i in 1:ncol(hp_y.adducts)) {
+  for (j in 1:ncol(hp_x.mRNA)) {
+    model1 = lm(hp_y.adducts[, i] ~ hp_x.mRNA[, j])
+    Beta[i, j] = coefficients(model1)["hp_x.mRNA[, j"]
+    Pvalues[i, j] = summary(model1)$coefficients["hp_x.mRNA[, j]", "Pr(>|t|)"]
+  }
+}
+rownames(Pvalues) = rownames(Beta) = colnames(hp_y.adducts)
+colnames(Pvalues) = colnames(Beta) = colnames(hp_x.mRNA)
+
+write.csv(Pvalues, "2_Integration/Results/sig.sig_univ/hp_adduct[Y].mRNA_pval.csv")
+write.csv(Beta, "2_Integration/Results/sig.sig_univ/hp_adduct[Y].mRNA_betas.csv")
+
+```
+
+```{r}
+##sig.adducts[Y] vs. miRNA[X] 
+# -indications that miRNA can help with nucleotide excision repair (active repair of DNA adducts formed by UV/chemical damage)
+
+# Oxford
+#ox_y.adducts
+#ox_x.miRNA
+
+Beta = Pvalues = matrix(NA, nrow = ncol(ox_y.adducts), ncol = ncol(ox_x.miRNA))
+
+for (i in 1:ncol(ox_y.adducts)) {
+  for (j in 1:ncol(ox_x.miRNA)) {
+    model1 = lm(ox_y.adducts[, i] ~ ox_x.miRNA[, j])
+    Beta[i, j] = coefficients(model1)["ox_x.miRNA[, j]"]
+    Pvalues[i, j] = summary(model1)$coefficients["ox_x.miRNA[, j]", "Pr(>|t|)"]
+  }
+}
+rownames(Pvalues) = rownames(Beta) = colnames(ox_y.adducts)
+colnames(Pvalues) = colnames(Beta) = colnames(ox_x.miRNA)
+
+write.csv(Pvalues, "2_Integration/Results/sig.sig_univ/ox_adduct[Y].miRNA_pval.csv")
+write.csv(Beta, "2_Integration/Results/sig.sig_univ/ox_adduct[Y].miRNA_betas.csv")
+
+
+# Hyde Park
+
+#hp_y.adducts
+#hp_x.miRNA
+
+Beta = Pvalues = matrix(NA, nrow = ncol(hp_y.adducts), ncol = ncol(hp_x.miRNA))
+
+for (i in 1:ncol(hp_y.adducts)) {
+  for (j in 1:ncol(hp_x.miRNA)) {
+    model1 = lm(hp_y.adducts[, i] ~ hp_x.miRNA[, j])
+    Beta[i, j] = coefficients(model1)["hp_x.miRNA[, j"]
+    Pvalues[i, j] = summary(model1)$coefficients["hp_x.miRNA[, j]", "Pr(>|t|)"]
+  }
+}
+rownames(Pvalues) = rownames(Beta) = colnames(hp_y.adducts)
+colnames(Pvalues) = colnames(Beta) = colnames(hp_x.miRNA)
+
+write.csv(Pvalues, "2_Integration/Results/sig.sig_univ/hp_adduct[Y].miRNA_pval.csv")
+write.csv(Beta, "2_Integration/Results/sig.sig_univ/hp_adduct[Y].miRNA_betas.csv")
+```
+
+
+
+[Y] sig.miRNA
+
+```{r}
+#####sig.miRNA[Y] vs. sig.mRNA[X] #####
+
+# Oxford
+ox_y.miRNA <- data.frame(miRNA[miRNA$Loc == "ox", 2:ncol(miRNA)])
+#ox_x.mRNA
+
+Beta = Pvalues = matrix(NA, nrow = ncol(ox_y.miRNA), ncol = ncol(ox_x.mRNA))
+
+for (i in 1:ncol(ox_y.miRNA)) {
+  for (j in 1:ncol(ox_x.mRNA)) {
+    model1 = lm(ox_y.miRNA[, i] ~ ox_x.mRNA[, j])
+    Beta[i, j] = coefficients(model1)["ox_x.mRNA[, j]"]
+    Pvalues[i, j] = summary(model1)$coefficients["ox_x.mRNA[, j]", "Pr(>|t|)"]
+  }
+}
+rownames(Pvalues) = rownames(Beta) = colnames(ox_y.miRNA)
+colnames(Pvalues) = colnames(Beta) = colnames(ox_x.mRNA)
+
+write.csv(Pvalues, "2_Integration/Results/sig.sig_univ/ox_miRNA[Y].mRNA_pval.csv")
+write.csv(Beta, "2_Integration/Results/sig.sig_univ/ox_miRNA[Y].mRNA_betas.csv")
+
+
+# Hyde Park
+
+hp_y.miRNA <- data.frame(miRNA[miRNA$Loc == "hp", 2:ncol(miRNA)])
+#hp_x.mRNA
+
+Beta = Pvalues = matrix(NA, nrow = ncol(hp_y.miRNA), ncol = ncol(hp_x.mRNA))
+
+for (i in 1:ncol(hp_y.miRNA)) {
+  for (j in 1:ncol(hp_x.mRNA)) {
+    model1 = lm(hp_y.miRNA[, i] ~ hp_x.mRNA[, j])
+    Beta[i, j] = coefficients(model1)["hp_x.mRNA[, j]"]
+    Pvalues[i, j] = summary(model1)$coefficients["hp_x.mRNA[, j]", "Pr(>|t|)"]
+  }
+}
+rownames(Pvalues) = rownames(Beta) = colnames(hp_y.miRNA)
+colnames(Pvalues) = colnames(Beta) = colnames(hp_x.mRNA)
+
+write.csv(Pvalues, "2_Integration/Results/sig.sig_univ/hp_miRNA[Y].mRNA_pval.csv")
+write.csv(Beta, "2_Integration/Results/sig.sig_univ/hp_miRNA[Y].mRNA_betas.csv")
+```
+
+
+```{r}
+#####sig.miRNA[Y] vs. sig.adducts[X] #####
+
+# Oxford
+#ox_y.miRNA
+#ox_x.adducts
+
+Beta = Pvalues = matrix(NA, nrow = ncol(ox_y.miRNA), ncol = ncol(ox_x.adducts))
+
+for (i in 1:ncol(ox_y.miRNA)) {
+  for (j in 1:ncol(ox_x.adducts)) {
+    model1 = lm(ox_y.miRNA[, i] ~ ox_x.adducts[, j])
+    Beta[i, j] = coefficients(model1)["ox_x.adducts[, j]"]
+    Pvalues[i, j] = summary(model1)$coefficients["ox_x.adducts[, j]", "Pr(>|t|)"]
+  }
+}
+rownames(Pvalues) = rownames(Beta) = colnames(ox_y.miRNA)
+colnames(Pvalues) = colnames(Beta) = colnames(ox_x.adducts)
+
+write.csv(Pvalues, "2_Integration/Results/sig.sig_univ/ox_miRNA[Y].adducts_pval.csv")
+write.csv(Beta, "2_Integration/Results/sig.sig_univ/ox_miRNA[Y].adducts_betas.csv")
+
+
+# Hyde Park
+
+#hp_y.miRNA
+#hp_x.adducts
+
+Beta = Pvalues = matrix(NA, nrow = ncol(hp_y.miRNA), ncol = ncol(hp_x.adducts))
+
+for (i in 1:ncol(hp_y.miRNA)) {
+  for (j in 1:ncol(hp_x.adducts)) {
+    model1 = lm(hp_y.miRNA[, i] ~ hp_x.adducts[, j])
+    Beta[i, j] = coefficients(model1)["hp_x.adducts[, j]"]
+    Pvalues[i, j] = summary(model1)$coefficients["hp_x.adducts[, j]", "Pr(>|t|)"]
+  }
+}
+rownames(Pvalues) = rownames(Beta) = colnames(hp_y.miRNA)
+colnames(Pvalues) = colnames(Beta) = colnames(hp_x.adducts)
+
+write.csv(Pvalues, "2_Integration/Results/sig.sig_univ/hp_miRNA[Y].adducts_pval.csv")
+write.csv(Beta, "2_Integration/Results/sig.sig_univ/hp_miRNA[Y].adducts_betas.csv")
+```
+#sig.miRNA vs. metabolites[X] - unlikely that metabolites can lead to changes in miRNA
+
+
+
+Filtering for significant pairs
+
+```{r} 
+rm(list=ls())
+
+#Loading pval - Hyde Park
+#1st omic in name is [Y]
+
+hp_add.metab = read.csv("2_Integration/Results/sig.sig_univ/pval/hp_adduct[Y].metab_pval.csv")
+hp_add.miRNA = read.csv("2_Integration/Results/sig.sig_univ/pval/hp_adduct[Y].miRNA_pval.csv")
+hp_add.mRNA = read.csv("2_Integration/Results/sig.sig_univ/pval/hp_adduct[Y].mRNA_pval.csv")
+hp_metab.add = read.csv("2_Integration/Results/sig.sig_univ/pval/hp_metab[Y].adducts_pval.csv")
+hp_metab.miRNA = read.csv("2_Integration/Results/sig.sig_univ/pval/hp_metab[Y].miRNA_pval.csv")
+hp_metab.mRNA = read.csv("2_Integration/Results/sig.sig_univ/pval/hp_metab[Y].mRNA_pval.csv")
+hp_miRNA.add = read.csv("2_Integration/Results/sig.sig_univ/pval/hp_miRNA[Y].adducts_pval.csv")
+hp_miRNA.mRNA = read.csv("2_Integration/Results/sig.sig_univ/pval/hp_miRNA[Y].mRNA_pval.csv")
+hp_mRNA.add = read.csv("2_Integration/Results/sig.sig_univ/pval/hp_mRNA[Y].adducts_pval.csv")
+hp_mRNA.metab = read.csv("2_Integration/Results/sig.sig_univ/pval/hp_mRNA[Y].metab_pval.csv")
+hp_mRNA.miRNA = read.csv("2_Integration/Results/sig.sig_univ/pval/hp_mRNA[Y].miRNA_pval.csv")
+```
+
