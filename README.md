@@ -1,5 +1,7 @@
 # Biological responses to short-term exposure to air pollution: a multi-level OMICs analysis
 
+A research project carried out with Shati Rahman and Hong Tan at Imperial College London.
+
 ## Abstract
 ### Introduction
 While the association between long-term negative health outcomes and air pollution has been established, short term exposure to air pollution and traffic-related air pollutants (TRAPs) has only recently been investigated. In this study we investigate the effects of short-term exposure to air pollution at a multi-omic level.
@@ -9,3 +11,14 @@ Using a randomised crossover interventional study design, recruited participants
 One mRNA, six miRNAs, 148 metabolites and two adducts ,mnnj bhmguygtg65tt4rertwere found to be significantly associated with at least one TRAP exposure. Investigations into relations between markers at different OMICs levels revealed some patterns of covariance that were intensified when analysis was stratified by exposure site, indicating perturbation of biological pathways by TRAP exposure.
 ### Discussion 
 Functional analysis and comparison with previous published research suggest that the short-term molecular biological responses may have some relevance to longer-term health outcomes including cancer and COPD. Stratification by health status reveals interesting differential responses to exposure among healthy, COPD and IHD participants.
+
+## Sample plots
+
+##### Volcano plots showing results of univariate analysis of matabolomic response
+
+![Univariate volcano plots](https://github.com/mathzero/multi_omics_air_pollution_Oxford_street/blob/master/figures/metabolites_volcanos/metabolites_volcanos.png)
+
+##### Marginal network analysis of multi-OMIC response at Oxford street
+
+![Marginal network analysis of multi-OMIC response at Oxford street]
+(https://github.com/mathzero/multi_omics_air_pollution_Oxford_street/blob/master/figures/Marginal_network_Combined/Marginal_network_Combined-min.png)
