@@ -20,5 +20,4 @@ Functional analysis and comparison with previous published research suggest that
 
 ##### Marginal network analysis of multi-OMIC response at Oxford street
 
-![Marginal network analysis of multi-OMIC response at Oxford street]
-(https://github.com/mathzero/multi_omics_air_pollution_Oxford_street/blob/master/figures/Marginal_network_Combined/Marginal_network_Combined-min.png)
+![Marginal network analysis of multi-OMIC response at Oxford street](https://github.com/mathzero/multi_omics_air_pollution_Oxford_street/blob/master/figures/Marginal_network_Combined/Marginal_network_Combined-min.png)
